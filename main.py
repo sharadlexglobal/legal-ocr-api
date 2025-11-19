@@ -1,8 +1,21 @@
 import os
+import sys
 import time
-from flask import Flask, request, jsonify
+
+print("===== STARTING FLASK APP =====", file=sys.stderr, flush=True)
+print(f"Python version: {sys.version}", file=sys.stderr, flush=True)
+print(f"Current directory: {os.getcwd()}", file=sys.stderr, flush=True)
+print(f"Files in current directory: {os.listdir('.')}", file=sys.stderr, flush=True)
+
+try:
+    from flask import Flask, request, jsonify
+    print("✓ Flask imported successfully", file=sys.stderr, flush=True)
+except Exception as e:
+    print(f"✗ Flask import failed: {e}", file=sys.stderr, flush=True)
+    raise
 
 app = Flask(__name__)
+print("✓ Flask app created", file=sys.stderr, flush=True)
 
 @app.route('/', methods=['GET'])
 def root():
@@ -32,6 +45,9 @@ def webhook():
         }), 200
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)}), 500
+
+print("✓ All routes registered", file=sys.stderr, flush=True)
+print("===== FLASK APP READY =====", file=sys.stderr, flush=True)
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8080))
